@@ -13,22 +13,22 @@ to start the test run this script:
     apiVersion: v1
     kind: ConfigMap
     metadata:
-    name: resources-shield-cm
-    namespace: resources-shield
+        name: resources-shield-cm
+        namespace: resources-shield
     data:
-    protected-resources-shield-list.yaml: |
-        protectedNamespaces:
-        - kube-system
-        - default
-        - my-important-namespace
-        - kyverno
-        - flux-system
-        - crossplane-system
-        - castai-system
-        - karpenter
-        - cert-manager
-        - calico
-        # add your own namespaces
+        protected-resources-shield-list.yaml: |
+            protectedNamespaces:
+                - kube-system
+                - default
+                - my-important-namespace
+                - kyverno
+                - flux-system
+                - crossplane-system
+                - castai-system
+                - karpenter
+                - cert-manager
+                - calico
+                # add your own namespaces
     ```
 - Apply your changes and it will automatically upate the operator memory with the new namespaces:
     ```sh
