@@ -9,9 +9,10 @@ data:
       - kube-system
       - default
       - my-important-namespace
-      - moin3
-      - moin4
-      - moin5
-      - moin6
-      - moin7
-      - sho
+      - kyverno
+      - flux-system
+      - crossplane-system
+      - castai-system
+      - karpenter
+      - cert-manager
+      - calico
