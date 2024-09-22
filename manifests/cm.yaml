@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: resources-shield-cm
+  namespace: resources-shield
+data:
+  protected-resources-shield-list.yaml: |
+    protectedNamespaces:
+      - kube-system
+      - default
+      - my-important-namespace
+      - moin3
+      - moin4
+      - moin5
+      - moin6
+      - moin7
+      - sho

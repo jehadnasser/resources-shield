@@ -1,0 +1,50 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: resources-shield-validating-webhook
+webhooks:
+  - name: cluster-resources-shield.resources-shield.com
+    sideEffects: None
+    admissionReviewVersions: ["v1"]
+    failurePolicy: Fail
+    rules:
+      - apiGroups: ["*"]
+        apiVersions: ["*"]
+        operations: ["DELETE"]
+        resources:
+          - namespaces
+          - clusterroles
+          - clusterrolebindings
+        scope: "Cluster"
+    clientConfig:
+      service:
+        name: resources-shield-svc
+        namespace: resources-shield
+        path: "/validate"
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURHVENDQWdHZ0F3SUJBZ0lVY2M2bFN0MitUK0NuS3l2eEZLdWtIWEpuR3Frd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0hERWFNQmdHQTFVRUF3d1JVbVZ6YjNWeVkyVnpVMmhwWld4a1EwRXdIaGNOTWpRd09USXlNakl4TVRNNApXaGNOTWprd09USXhNakl4TVRNNFdqQWNNUm93R0FZRFZRUUREQkZTWlhOdmRYSmpaWE5UYUdsbGJHUkRRVENDCkFTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSitpeC8vbDkyTzQyZ2JmNGlKd3lYMWYKZ3BwK2Qxb3M3NjVzc3piYTlCeHJ2bkhOOUR6K2pJTWM4N3FiUTZ5Vkl6dnRkUjBIOXN2TStsTFpnbkJna3pOMQpnaHB5RGJ3aEFwaDRTcmIrOGFBU3FqM2JtUEN6QW81bUhZbWxNMU9EMkk1YzZaS3puL1BHdXQ5M3FtdFVHakJMCmRVZzgzdndITXpCV2tibCs3TFBKYWw3VVNKQUE2U2JvOGpiVHpYL3o4MjhTaXlqbkJ5bDhVSE1iTmtlL2o3eTcKMUJ6VlJpL05JMWN5ZGhjNXVHVDF3NS9Yc2Zic09Tb2xZYXZWQWFsMkFRakNOQTRBYjVyVlFkWGluR2I3UlNNTwpXaFg0S2t6V3lyT1lzc3VIREw1RG1wMmRCVkFDWEFQTVRUd3FoendLTkV1eXF5UFBucFpiZTdnUFY0bTRuZjBDCkF3RUFBYU5UTUZFd0hRWURWUjBPQkJZRUZNekpLQk5tMjVVVmxMdmwxbkM4eDFHd1ZFc1NNQjhHQTFVZEl3UVkKTUJhQUZNekpLQk5tMjVVVmxMdmwxbkM4eDFHd1ZFc1NNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdEUVlKS29aSQpodmNOQVFFTEJRQURnZ0VCQUZLdmxKL2lhWUdpUGxPUm1xaldnWVlaQm1sSnRRMXZwaXFKQmgzTjJRUEtRV2VnCktjT1d0RlQ2blk2V1drVmdOZFFKTXdhOU9iQkNoSTlPcXltamZqUkRJV0JFZ21oOU5WWTBENWl0VTNYc2M1WmcKVTdRcG12clNhMXN6TFpmblhaYnB3ZklmZGtsRDh0QjdYS0g5MklJd2g0UFBhaHdlZEIvSU02SURvVVZLOUtocgpybUsrTFQwNjFUUXJpQnF2bndvUjRGeTVlenM1S2s0VkptbkRoL1BXNkJlSGkrb2RhVUgzcFNzWHg1TzMzV09oCjM4WUFkL24weDFmdy85RE5IeVY5djFCaVAwdWJ4cE9SOEhoZmkycnNCZ2t4QkpqWGVPOGg1ai9RMllpQ1R4UDQKQm1VeU5MVlBlU0I0VlcyWEZ6ZitzSFIzUEk4YkwxZnpCdStoK2lRPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  # Webhook for namespaced resources within the operator's namespace
+  - name: namespaced-resources-shield.resources-shield.com
+    sideEffects: None
+    admissionReviewVersions: ["v1"]
+    failurePolicy: Fail
+    namespaceSelector:
+      matchLabels:
+        app: resources-shield
+    rules:
+      - apiGroups: ["*"]
+        apiVersions: ["*"]
+        operations: ["DELETE"]
+        resources:
+          - deployments
+          - services
+          - validatingwebhookconfigurations
+          - serviceaccounts
+          - configmaps
+          - secrets
+        scope: "Namespaced"
+    clientConfig:
+      service:
+        name: resources-shield-svc
+        namespace: resources-shield
+        path: "/validate"
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURHVENDQWdHZ0F3SUJBZ0lVY2M2bFN0MitUK0NuS3l2eEZLdWtIWEpuR3Frd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0hERWFNQmdHQTFVRUF3d1JVbVZ6YjNWeVkyVnpVMmhwWld4a1EwRXdIaGNOTWpRd09USXlNakl4TVRNNApXaGNOTWprd09USXhNakl4TVRNNFdqQWNNUm93R0FZRFZRUUREQkZTWlhOdmRYSmpaWE5UYUdsbGJHUkRRVENDCkFTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBSitpeC8vbDkyTzQyZ2JmNGlKd3lYMWYKZ3BwK2Qxb3M3NjVzc3piYTlCeHJ2bkhOOUR6K2pJTWM4N3FiUTZ5Vkl6dnRkUjBIOXN2TStsTFpnbkJna3pOMQpnaHB5RGJ3aEFwaDRTcmIrOGFBU3FqM2JtUEN6QW81bUhZbWxNMU9EMkk1YzZaS3puL1BHdXQ5M3FtdFVHakJMCmRVZzgzdndITXpCV2tibCs3TFBKYWw3VVNKQUE2U2JvOGpiVHpYL3o4MjhTaXlqbkJ5bDhVSE1iTmtlL2o3eTcKMUJ6VlJpL05JMWN5ZGhjNXVHVDF3NS9Yc2Zic09Tb2xZYXZWQWFsMkFRakNOQTRBYjVyVlFkWGluR2I3UlNNTwpXaFg0S2t6V3lyT1lzc3VIREw1RG1wMmRCVkFDWEFQTVRUd3FoendLTkV1eXF5UFBucFpiZTdnUFY0bTRuZjBDCkF3RUFBYU5UTUZFd0hRWURWUjBPQkJZRUZNekpLQk5tMjVVVmxMdmwxbkM4eDFHd1ZFc1NNQjhHQTFVZEl3UVkKTUJhQUZNekpLQk5tMjVVVmxMdmwxbkM4eDFHd1ZFc1NNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdEUVlKS29aSQpodmNOQVFFTEJRQURnZ0VCQUZLdmxKL2lhWUdpUGxPUm1xaldnWVlaQm1sSnRRMXZwaXFKQmgzTjJRUEtRV2VnCktjT1d0RlQ2blk2V1drVmdOZFFKTXdhOU9iQkNoSTlPcXltamZqUkRJV0JFZ21oOU5WWTBENWl0VTNYc2M1WmcKVTdRcG12clNhMXN6TFpmblhaYnB3ZklmZGtsRDh0QjdYS0g5MklJd2g0UFBhaHdlZEIvSU02SURvVVZLOUtocgpybUsrTFQwNjFUUXJpQnF2bndvUjRGeTVlenM1S2s0VkptbkRoL1BXNkJlSGkrb2RhVUgzcFNzWHg1TzMzV09oCjM4WUFkL24weDFmdy85RE5IeVY5djFCaVAwdWJ4cE9SOEhoZmkycnNCZ2t4QkpqWGVPOGg1ai9RMllpQ1R4UDQKQm1VeU5MVlBlU0I0VlcyWEZ6ZitzSFIzUEk4YkwxZnpCdStoK2lRPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==

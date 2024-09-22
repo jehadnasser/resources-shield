@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resources-shield-deploy
+  namespace: resources-shield
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resources-shield-app
+  template:
+    metadata:
+      labels:
+        app: resources-shield-app
+    spec:
+      serviceAccountName: resources-shield-sa
+      containers:
+        - name: resources-shield
+          image: jehadnasser/resources-shield:1.0.2
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 8443
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: "/tls"
+              readOnly: true
+            - name: config-volume
+              mountPath: "/config"
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: resources-shield-cm
+        - name: webhook-certs
+          secret:
+            secretName: resources-shield-certs
