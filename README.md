@@ -1,14 +1,12 @@
+# Resources-Shield
+This Operator protects namespaces in your cluster, and protect its own resources as well
+
+## How it works
+to start the test run this script:
 ```sh
-kind create cluster --config kind-cluster-configs.yaml
-
-docker build -t jehadnasser/namespace-protection-webhook:1.0.1 .
-
-docker push  jehadnasser/namespace-protection-webhook:1.0.1
-
-kind load docker-image jehadnasser/namespace-protection-webhook:1.0.1 --name demo-validating-webhook-protect-ns
-
-k apply -f shield-operator-manifests/ns.yaml
-k apply -f shield-operator-manifests/sa.yaml -f shield-operator-manifests/tls-secret.yaml -f shield-operator-manifests/cm.yaml
-k apply -f shield-operator-manifests
-
+./bootstrap.sh
 ```
+
+## What's next?
+- find a way to stop this operator when I need to really delete?
+- does fluxCD will keep them exists? or do I need a specific controller for this operator?
