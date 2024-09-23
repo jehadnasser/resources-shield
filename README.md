@@ -35,6 +35,10 @@ to start the test run this script:
     kubectl apply -f mainfests/cm.yaml
     ```
 
+## How to delete a protected namespace
+- edit the configMap and delete the namespace you want to stop protecting
+```sh
+kubectl edit cm/resources-shield-cm -n resources-shield
+```
 ## What's next?
-- find a way to stop this operator when I need to really delete?
 - does fluxCD will keep them exists? or do I need a specific controller for this operator?
